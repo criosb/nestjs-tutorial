@@ -1,0 +1,10 @@
+// Install nestjs
+npm install -g @nestjs/cli
+
+// nest version
+nest --version
+
+// create new nest project
+nest new nestjs-tutorial
+
+// create module
