@@ -1,3 +1,5 @@
+//// Session 0 ////
+
 // Install nestjs
 npm install -g @nestjs/cli
 
@@ -8,3 +10,11 @@ nest --version
 nest new nestjs-tutorial
 
 // create module
+nest g mo users
+
+// create service in a custom (services) folder
+nest g s users/services/users --flat
+
+// create controller in a custom (controllers) folder
+nest g co users/controllers/users --flat
+
