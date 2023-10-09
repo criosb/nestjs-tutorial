@@ -11,5 +11,6 @@ async function bootstrap() {
   app.setGlobalPrefix('api');
   const configService = app.get(ConfigService);
   await app.listen(configService.get('PORT'));
+  console.info(`Application is running on: ${await app.getUrl()}`);
 }
 bootstrap();
