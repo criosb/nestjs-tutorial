@@ -39,3 +39,7 @@ pnpm add -P @nestjs/typeorm typeorm pg
 
 // install typeorm naming strategies
 pnpm add -P typeorm-naming-strategies
+
+// create projects module
+nest g mo projects
+
