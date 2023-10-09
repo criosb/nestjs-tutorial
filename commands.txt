@@ -23,3 +23,7 @@ nest g co users/controllers/users --flat
 // install nestjs config module
 pnpm add -P @nestjs/config
 
+// install morgan logger and types
+pnpm add -P morgan
+pnpm add -D @types/morgan
+
