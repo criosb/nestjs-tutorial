@@ -1,13 +1,20 @@
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { DataSource, DataSourceOptions } from 'typeorm';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 
+ConfigModule.forRoot({
+  envFilePath: `.${process.env.NODE_ENV}.env`,
+});
+
+const configService = new ConfigService();
+
 export const DataSourceConfig: DataSourceOptions = {
   type: 'postgres',
-  host: '',
-  port: 0,
-  username: '',
-  password: '',
-  database: '',
+  host: configService.get('DB_HOST'),
+  port: configService.get('DB_PORT'),
+  username: configService.get('DB_USER'),
+  password: configService.get('DB_PASSWORD'),
+  database: configService.get('DB_NAME'),
   entities: ['/../**/**/*.entity{.ts,.js}'],
   migrations: ['/../../migrations/*{.ts,.js}'],
   synchronize: false,
