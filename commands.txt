@@ -27,3 +27,8 @@ pnpm add -P @nestjs/config
 pnpm add -P morgan
 pnpm add -D @types/morgan
 
+//// Session 2 ////
+
+// run docker-compose
+docker-compose up
+

@@ -1,0 +1,15 @@
+version: '2.15.1'
+
+services:
+  carlos_pg:
+    image: postgres:16.0
+    container_name: carlos_pg
+    restart: always
+    environment:
+      POSTGRES_DB: carlosdb
+      POSTGRES_USER: carlos
+      POSTGRES_PASSWORD: carlos1234
+    volumes:
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - 5432:5432
