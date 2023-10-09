@@ -18,3 +18,8 @@ nest g s users/services/users --flat
 // create controller in a custom (controllers) folder
 nest g co users/controllers/users --flat
 
+//// Session 1 ////
+
+// install nestjs config module
+pnpm add -P @nestjs/config
+
