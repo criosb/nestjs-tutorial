@@ -32,3 +32,10 @@ pnpm add -D @types/morgan
 // run docker-compose
 docker-compose up
 
+//// Session 3 ////
+
+// install typeorm with postgres client
+pnpm add -P @nestjs/typeorm typeorm pg
+
+// install typeorm naming strategies
+pnpm add -P typeorm-naming-strategies
