@@ -45,6 +45,9 @@ nest g mo projects
 
 //// Session 4 ////
 
-// install class validator
+// install class validator and class transformers (validation utilities)
 pnpm add -P class-validator class-transformer
+
+// install mapped type (validation utilities)
+pnpm add -P @nestjs/mapped-types
 

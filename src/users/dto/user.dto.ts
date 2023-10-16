@@ -1,4 +1,5 @@
 import { IsEnum, IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { PartialType } from '@nestjs/mapped-types';
 import { ROLES } from '../../constants/roles';
 
 export class UserDTO {
@@ -30,3 +31,5 @@ export class UserDTO {
   @IsEnum(ROLES)
   role: ROLES;
 }
+
+export class UpdateUserDTO extends PartialType(UserDTO) {}
