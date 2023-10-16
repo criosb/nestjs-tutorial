@@ -43,3 +43,8 @@ pnpm add -P typeorm-naming-strategies
 // create projects module
 nest g mo projects
 
+//// Session 4 ////
+
+// install class validator
+pnpm add -P class-validator class-transformer
+
