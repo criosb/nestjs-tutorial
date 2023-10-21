@@ -51,3 +51,5 @@ pnpm add -P class-validator class-transformer
 // install mapped type (validation utilities)
 pnpm add -P @nestjs/mapped-types
 
+// create service projects service
+nest g s projects/services/projects --flat
