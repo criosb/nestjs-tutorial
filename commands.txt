@@ -53,3 +53,8 @@ pnpm add -P @nestjs/mapped-types
 
 // create service projects service
 nest g s projects/services/projects --flat
+
+//// Session 6 ////
+
+// create service projects controller
+nest g co projects/controllers/projects --flat

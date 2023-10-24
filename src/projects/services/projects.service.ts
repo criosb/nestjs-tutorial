@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { ProjectsEntity } from '../entities/projects.entity';
 import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 import { ProjectDTO, UpdateProjectDTO } from '../dto/project.dto';
+import { ErrorManager } from 'src/utils/error.manager';
 
 @Injectable()
 export class ProjectsService {
@@ -13,39 +14,67 @@ export class ProjectsService {
 
   public async createProject(body: ProjectDTO): Promise<ProjectsEntity> {
     try {
-      return await this.projectRepository.save(body);
+      const project: ProjectsEntity = await this.projectRepository.save(body);
+      if (!project) {
+        throw new ErrorManager({
+          type: 'BAD_REQUEST',
+          message: 'Unable to create project',
+        });
+      }
+      return project;
     } catch (error) {
-      throw new Error(error);
+      throw ErrorManager.createSignatureError(error.message);
     }
   }
 
   public async findProjects(): Promise<ProjectsEntity[]> {
     try {
-      return await this.projectRepository.find();
+      const projects: ProjectsEntity[] = await this.projectRepository.find();
+      if (projects.length === 0) {
+        throw new ErrorManager({
+          type: 'NOT_FOUND',
+          message: 'Projects not found',
+        });
+      }
+      return projects;
     } catch (error) {
-      throw new Error(error);
+      throw ErrorManager.createSignatureError(error.message);
     }
   }
 
   public async findProjectById(id: string): Promise<ProjectsEntity> {
     try {
-      return await this.projectRepository
+      const project: ProjectsEntity = await this.projectRepository
         .createQueryBuilder('project')
         .where({ id })
         .getOne();
+      if (!project) {
+        throw new ErrorManager({
+          type: 'NOT_FOUND',
+          message: 'Project not found',
+        });
+      }
+      return project;
     } catch (error) {
-      throw new Error(error);
+      throw ErrorManager.createSignatureError(error.message);
     }
   }
 
   public async findProjectByName(name: string): Promise<ProjectsEntity> {
     try {
-      return await this.projectRepository
+      const project: ProjectsEntity = await this.projectRepository
         .createQueryBuilder('project')
         .where({ name })
         .getOne();
+      if (!project) {
+        throw new ErrorManager({
+          type: 'NOT_FOUND',
+          message: 'Project not found',
+        });
+      }
+      return project;
     } catch (error) {
-      throw new Error(error);
+      throw ErrorManager.createSignatureError(error.message);
     }
   }
 
@@ -59,11 +88,14 @@ export class ProjectsService {
         body,
       );
       if (result.affected === 0) {
-        throw new Error('Project not found');
+        throw new ErrorManager({
+          type: 'BAD_REQUEST',
+          message: 'Unable to update project',
+        });
       }
       return result;
     } catch (error) {
-      throw new Error(error);
+      throw ErrorManager.createSignatureError(error.message);
     }
   }
 
@@ -71,11 +103,14 @@ export class ProjectsService {
     try {
       const result: DeleteResult = await this.projectRepository.delete(id);
       if (result.affected === 0) {
-        throw new Error('Project not found');
+        throw new ErrorManager({
+          type: 'BAD_REQUEST',
+          message: 'Unable to delete project',
+        });
       }
       return result;
     } catch (error) {
-      throw new Error(error);
+      throw ErrorManager.createSignatureError(error.message);
     }
   }
 }
