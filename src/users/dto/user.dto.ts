@@ -1,4 +1,5 @@
 import {
+  IsEmail,
   IsEnum,
   IsNotEmpty,
   IsNumber,
@@ -25,6 +26,7 @@ export class UserDTO {
 
   @IsNotEmpty()
   @IsString()
+  @IsEmail()
   email: string;
 
   @IsNotEmpty()

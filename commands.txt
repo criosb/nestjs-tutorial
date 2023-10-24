@@ -67,7 +67,7 @@ nest g co projects/controllers/projects --flat
 
 // install bcryps and jsonwebtoken
 pnpm add -P bcrypt jsonwebtoken
-pnpm add -D @types/bcrypt
+pnpm add -D @types/bcrypt @types/jsonwebtoken
 
 // rereate docker postgres container
 docker ps
