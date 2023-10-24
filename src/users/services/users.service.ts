@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { UsersEntity } from '../entities/users.entity';
 import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 import { UpdateUserDTO, UserDTO } from '../dto/user.dto';
-import { ErrorManager } from 'src/utils/error.manager';
+import { ErrorManager } from '../../utils/error.manager';
 
 @Injectable()
 export class UsersService {
@@ -14,9 +14,16 @@ export class UsersService {
 
   public async createUser(body: UserDTO): Promise<UsersEntity> {
     try {
-      return await this.userRepository.save(body);
+      const user: UsersEntity = await this.userRepository.save(body);
+      if (!user) {
+        throw new ErrorManager({
+          type: 'BAD_REQUEST',
+          message: 'Unable to create user',
+        });
+      }
+      return user;
     } catch (error) {
-      throw new Error(error);
+      throw ErrorManager.createSignatureError(error.message);
     }
   }
 
@@ -31,18 +38,25 @@ export class UsersService {
       }
       return users;
     } catch (error) {
-      throw new ErrorManager.createSignatureError(error.message);
+      throw ErrorManager.createSignatureError(error.message);
     }
   }
 
   public async findUserById(id: string): Promise<UsersEntity> {
     try {
-      return await this.userRepository
+      const user: UsersEntity = await this.userRepository
         .createQueryBuilder('user')
         .where({ id })
         .getOne();
+      if (!user) {
+        throw new ErrorManager({
+          type: 'NOT_FOUND',
+          message: 'User not found',
+        });
+      }
+      return user;
     } catch (error) {
-      throw new Error(error);
+      throw ErrorManager.createSignatureError(error.message);
     }
   }
 
@@ -60,7 +74,7 @@ export class UsersService {
       }
       return result;
     } catch (error) {
-      throw new ErrorManager.createSignatureError(error.message);
+      throw ErrorManager.createSignatureError(error.message);
     }
   }
 
@@ -75,7 +89,7 @@ export class UsersService {
       }
       return result;
     } catch (error) {
-      throw new ErrorManager.createSignatureError(error.message);
+      throw ErrorManager.createSignatureError(error.message);
     }
   }
 }
