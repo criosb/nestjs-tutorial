@@ -1,6 +1,14 @@
-import { IsEnum, IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import {
+  IsEnum,
+  IsNotEmpty,
+  IsNumber,
+  IsString,
+  IsUUID,
+} from 'class-validator';
 import { PartialType } from '@nestjs/mapped-types';
-import { ROLES } from '../../constants/roles';
+import { ACCESS_LEVEL, ROLES } from '../../constants/roles';
+import { UsersEntity } from '../entities/users.entity';
+import { ProjectsEntity } from '../../projects/entities/projects.entity';
 
 export class UserDTO {
   @IsNotEmpty()
@@ -33,3 +41,17 @@ export class UserDTO {
 }
 
 export class UpdateUserDTO extends PartialType(UserDTO) {}
+
+export class UserProjectAssignmentDTO {
+  @IsNotEmpty()
+  @IsUUID()
+  user: UsersEntity;
+
+  @IsNotEmpty()
+  @IsUUID()
+  project: ProjectsEntity;
+
+  @IsNotEmpty()
+  @IsEnum(ACCESS_LEVEL)
+  accessLevel: ACCESS_LEVEL;
+}

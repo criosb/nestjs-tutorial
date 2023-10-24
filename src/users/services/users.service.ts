@@ -2,14 +2,21 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UsersEntity } from '../entities/users.entity';
 import { DeleteResult, Repository, UpdateResult } from 'typeorm';
-import { UpdateUserDTO, UserDTO } from '../dto/user.dto';
+import {
+  UpdateUserDTO,
+  UserDTO,
+  UserProjectAssignmentDTO,
+} from '../dto/user.dto';
 import { ErrorManager } from '../../utils/error.manager';
+import { UsersProjectsEntity } from '../entities/usersprojects.entity';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(UsersEntity)
     private readonly userRepository: Repository<UsersEntity>,
+    @InjectRepository(UsersProjectsEntity)
+    private readonly usersProjectsRepository: Repository<UsersProjectsEntity>,
   ) {}
 
   public async createUser(body: UserDTO): Promise<UsersEntity> {
@@ -47,6 +54,8 @@ export class UsersService {
       const user: UsersEntity = await this.userRepository
         .createQueryBuilder('user')
         .where({ id })
+        .leftJoinAndSelect('user.projects', 'projects')
+        .leftJoinAndSelect('projects.project', 'project')
         .getOne();
       if (!user) {
         throw new ErrorManager({
@@ -88,6 +97,24 @@ export class UsersService {
         });
       }
       return result;
+    } catch (error) {
+      throw ErrorManager.createSignatureError(error.message);
+    }
+  }
+
+  public async assignUserToProject(
+    body: UserProjectAssignmentDTO,
+  ): Promise<UsersProjectsEntity> {
+    try {
+      const userProject: UsersProjectsEntity =
+        await this.usersProjectsRepository.save(body);
+      if (!userProject) {
+        throw new ErrorManager({
+          type: 'BAD_REQUEST',
+          message: 'Unable to assign user to project',
+        });
+      }
+      return userProject;
     } catch (error) {
       throw ErrorManager.createSignatureError(error.message);
     }

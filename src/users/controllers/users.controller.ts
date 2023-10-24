@@ -8,7 +8,14 @@ import {
   Post,
 } from '@nestjs/common';
 import { UsersService } from '../services/users.service';
-import { UpdateUserDTO, UserDTO } from '../dto/user.dto';
+import {
+  UpdateUserDTO,
+  UserDTO,
+  UserProjectAssignmentDTO,
+} from '../dto/user.dto';
+import { ACCESS_LEVEL } from 'src/constants/roles';
+import { UsersEntity } from '../entities/users.entity';
+import { ProjectsEntity } from 'src/projects/entities/projects.entity';
 
 @Controller('users')
 export class UsersController {
@@ -17,6 +24,24 @@ export class UsersController {
   @Post('')
   public async createUser(@Body() body: UserDTO) {
     return await this.userService.createUser(body);
+  }
+
+  @Post(':id/projects/:projectId')
+  public async assignUserToProject(
+    @Body() { accessLevel }: { accessLevel: ACCESS_LEVEL },
+    @Param('id') id: string,
+    @Param('projectId') projectId: string,
+  ) {
+    const user: UsersEntity = new UsersEntity();
+    user.id = id;
+    const project: ProjectsEntity = new ProjectsEntity();
+    project.id = projectId;
+    const body: UserProjectAssignmentDTO = {
+      user,
+      project,
+      accessLevel,
+    };
+    return await this.userService.assignUserToProject(body);
   }
 
   @Get('all')
