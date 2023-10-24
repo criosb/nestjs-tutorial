@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { UsersEntity } from '../entities/users.entity';
 import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 import { UpdateUserDTO, UserDTO } from '../dto/user.dto';
+import { ErrorManager } from 'src/utils/error.manager';
 
 @Injectable()
 export class UsersService {
@@ -21,9 +22,16 @@ export class UsersService {
 
   public async findUsers(): Promise<UsersEntity[]> {
     try {
-      return await this.userRepository.find();
+      const users: UsersEntity[] = await this.userRepository.find();
+      if (users.length === 0) {
+        throw new ErrorManager({
+          type: 'NOT_FOUND',
+          message: 'Users not found',
+        });
+      }
+      return users;
     } catch (error) {
-      throw new Error(error);
+      throw new ErrorManager.createSignatureError(error.message);
     }
   }
 
@@ -45,11 +53,14 @@ export class UsersService {
     try {
       const result: UpdateResult = await this.userRepository.update(id, body);
       if (result.affected === 0) {
-        throw new Error('User not found');
+        throw new ErrorManager({
+          type: 'BAD_REQUEST',
+          message: 'Unable to update user',
+        });
       }
       return result;
     } catch (error) {
-      throw new Error(error);
+      throw new ErrorManager.createSignatureError(error.message);
     }
   }
 
@@ -57,11 +68,14 @@ export class UsersService {
     try {
       const result: DeleteResult = await this.userRepository.delete(id);
       if (result.affected === 0) {
-        throw new Error('User not found');
+        throw new ErrorManager({
+          type: 'BAD_REQUEST',
+          message: 'Unable to delete user',
+        });
       }
       return result;
     } catch (error) {
-      throw new Error(error);
+      throw new ErrorManager.createSignatureError(error.message);
     }
   }
 }
