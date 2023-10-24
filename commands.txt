@@ -76,3 +76,7 @@ docker-compose up -d
 pnpm run m:gen -- src/migrations/init
 pnpm run m:run
 
+// create authentication module, service and controller
+nest g mo auth
+nest g s auth/services/auth --flat
+nest g co auth/controllers/auth --flat
