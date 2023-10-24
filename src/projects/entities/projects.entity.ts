@@ -1,7 +1,7 @@
 import { Column, Entity, OneToMany } from 'typeorm';
-import { BaseEntity } from '../../config/base.entity';
-import { IProject } from '../../interfaces/project.interface';
-import { UsersProjectsEntity } from '../../users/entities/usersprojects.entity';
+import { BaseEntity } from '../../config';
+import { IProject } from '../../interfaces';
+import { UsersProjectsEntity } from '../../users/entities';
 
 @Entity({ name: 'projects' })
 export class ProjectsEntity extends BaseEntity implements IProject {

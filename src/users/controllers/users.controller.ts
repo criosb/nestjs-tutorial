@@ -7,15 +7,11 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
-import { UsersService } from '../services/users.service';
-import {
-  UpdateUserDTO,
-  UserDTO,
-  UserProjectAssignmentDTO,
-} from '../dto/user.dto';
-import { ACCESS_LEVEL } from 'src/constants/roles';
-import { UsersEntity } from '../entities/users.entity';
-import { ProjectsEntity } from 'src/projects/entities/projects.entity';
+import { UsersService } from '../services';
+import { UpdateUserDTO, UserDTO, UserProjectAssignmentDTO } from '../dto';
+import { ACCESS_LEVEL } from '../../constants';
+import { UsersEntity } from '../entities';
+import { ProjectsEntity } from '../../projects/entities';
 
 @Controller('users')
 export class UsersController {
