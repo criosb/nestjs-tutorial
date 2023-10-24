@@ -45,11 +45,15 @@ nest g mo projects
 
 //// Session 4 ////
 
-// install class validator and class transformers (validation utilities)
+// install class-validator and class-transformer (validation utilities)
 pnpm add -P class-validator class-transformer
 
 // install mapped type (validation utilities)
 pnpm add -P @nestjs/mapped-types
+
+// generate and run migration
+pnpm run m:gen -- ./migrations/init
+pnpm run m:run
 
 // create service projects service
 nest g s projects/services/projects --flat
@@ -58,3 +62,17 @@ nest g s projects/services/projects --flat
 
 // create service projects controller
 nest g co projects/controllers/projects --flat
+
+//// Session 7 ////
+
+// install bcryps and jsonwebtoken
+pnpm add -P bcrypt jsonwebtoken
+pnpm add -D @types/bcrypt
+
+// rereate docker postgres container
+docker ps
+docker rm -f 49fa74906a30
+docker-compose up -d
+pnpm run m:gen -- src/migrations/init
+pnpm run m:run
+
