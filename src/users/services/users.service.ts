@@ -36,7 +36,7 @@ export class UsersService {
     }
   }
 
-  public async findUsers(): Promise<UsersEntity[]> {
+  public async getAllUsers(): Promise<UsersEntity[]> {
     try {
       const users: UsersEntity[] = await this.userRepository.find();
       if (users.length === 0) {
@@ -51,7 +51,7 @@ export class UsersService {
     }
   }
 
-  public async findUserById(id: string): Promise<UsersEntity> {
+  public async getUserById(id: string): Promise<UsersEntity> {
     try {
       const user: UsersEntity = await this.userRepository
         .createQueryBuilder('user')

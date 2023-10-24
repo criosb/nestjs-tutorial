@@ -41,13 +41,13 @@ export class UsersController {
   }
 
   @Get('all')
-  public async findAllUsers() {
-    return await this.userService.findUsers();
+  public async getAllUsers() {
+    return await this.userService.getAllUsers();
   }
 
   @Get(':id')
-  public async findUserById(@Param('id') id: string) {
-    return await this.userService.findUserById(id);
+  public async getUserById(@Param('id') id: string) {
+    return await this.userService.getUserById(id);
   }
 
   @Patch(':id')
