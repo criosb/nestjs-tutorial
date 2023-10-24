@@ -71,6 +71,31 @@ export class UsersService {
     }
   }
 
+  public async getUserBy({
+    key,
+    value,
+  }: {
+    key: keyof UserDTO;
+    value: any;
+  }): Promise<UsersEntity> {
+    try {
+      const user: UsersEntity = await this.userRepository
+        .createQueryBuilder('user')
+        // .addSelect('user.password')
+        .where({ [key]: value })
+        .getOne();
+      if (!user) {
+        throw new ErrorManager({
+          type: 'NOT_FOUND',
+          message: 'User not found',
+        });
+      }
+      return user;
+    } catch (error) {
+      throw ErrorManager.createSignatureError(error.message);
+    }
+  }
+
   public async updateUser(
     body: UpdateUserDTO,
     id: string,
