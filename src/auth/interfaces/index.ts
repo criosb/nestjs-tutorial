@@ -1,1 +1,1 @@
-export { TokenPayload } from './auth.interfaces';
+export * from './auth.interfaces';

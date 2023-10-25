@@ -3,7 +3,7 @@ import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
 import { UsersEntity } from '../../users/entities';
 import { UsersService } from '../../users/services';
-import { TokenPayload } from '../interfaces';
+import { DecodedToken, RawDecodedToken, TokenPayload } from '../interfaces';
 
 @Injectable()
 export class AuthService {
@@ -74,5 +74,19 @@ export class AuthService {
       }),
       user,
     };
+  }
+
+  public decodeToken(token: string): DecodedToken {
+    try {
+      const { sub, role, exp } = jwt.decode(token) as RawDecodedToken;
+      const isExpired = Date.now() / 1000 >= +new Date(exp);
+      return {
+        sub,
+        role,
+        isExpired,
+      };
+    } catch (error) {
+      return null;
+    }
   }
 }
