@@ -6,14 +6,18 @@ import {
   Param,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { UsersService } from '../services';
 import { UpdateUserDTO, UserDTO, UserProjectAssignmentDTO } from '../dto';
 import { ACCESS_LEVEL } from '../../constants';
 import { UsersEntity } from '../entities';
 import { ProjectsEntity } from '../../projects/entities';
+import { AuthGuard } from '../../auth/guards/auth.guard';
+import { PublicAccess } from '../../auth/decorators/public.decorator';
 
 @Controller('users')
+@UseGuards(AuthGuard)
 export class UsersController {
   constructor(private readonly userService: UsersService) {}
 
@@ -46,6 +50,7 @@ export class UsersController {
   }
 
   @Get(':id')
+  @PublicAccess()
   public async getUserById(@Param('id') id: string) {
     return await this.userService.getUserById(id);
   }
