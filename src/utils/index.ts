@@ -1,1 +1,1 @@
-export { ErrorManager } from './error.manager';
+export * from './error.manager';
