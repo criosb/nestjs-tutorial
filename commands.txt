@@ -80,3 +80,9 @@ pnpm run m:run
 nest g mo auth
 nest g s auth/services/auth --flat
 nest g co auth/controllers/auth --flat
+
+//// Session 8 ////
+
+// create auth guard
+nest g gu auth/guards/auth --flat
+
