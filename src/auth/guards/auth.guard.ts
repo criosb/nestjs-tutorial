@@ -17,6 +17,7 @@ export class AuthGuard implements CanActivate {
     private readonly userService: UsersService,
     private readonly reflector: Reflector,
   ) {}
+
   async canActivate(context: ExecutionContext) {
     const isPublic = this.reflector.get<boolean>(
       PUBLIC_KEY,
