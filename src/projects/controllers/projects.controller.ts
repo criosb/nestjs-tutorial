@@ -24,21 +24,21 @@ export class ProjectsController {
     return await this.projectService.findProjects();
   }
 
-  @Get(':id')
-  public async findProjectById(@Param('id') id: string) {
-    return await this.projectService.findProjectById(id);
+  @Get(':projectId')
+  public async findProjectById(@Param('projectId') projectId: string) {
+    return await this.projectService.findProjectById(projectId);
   }
 
-  @Patch(':id')
+  @Patch(':projectId')
   public async updateProject(
     @Body() body: UpdateProjectDTO,
-    @Param('id') id: string,
+    @Param('projectId') projectId: string,
   ) {
-    return await this.projectService.updateProject(body, id);
+    return await this.projectService.updateProject(body, projectId);
   }
 
-  @Delete(':id')
-  public async deleteProject(@Param('id') id: string) {
-    return await this.projectService.deleteProject(id);
+  @Delete(':projectId')
+  public async deleteProject(@Param('projectId') projectId: string) {
+    return await this.projectService.deleteProject(projectId);
   }
 }

@@ -28,15 +28,15 @@ export class UsersController {
     return await this.userService.createUser(body);
   }
 
-  @Post(':id/projects/:projectId')
+  @Post(':userId/projects/:projectId')
   @AdminAccess()
   public async assignUserToProject(
     @Body() { accessLevel }: { accessLevel: ACCESS_LEVEL },
-    @Param('id') id: string,
+    @Param('userId') userId: string,
     @Param('projectId') projectId: string,
   ) {
     const user: UsersEntity = new UsersEntity();
-    user.id = id;
+    user.id = userId;
     const project: ProjectsEntity = new ProjectsEntity();
     project.id = projectId;
     const body: UserProjectAssignmentDTO = {
@@ -53,24 +53,24 @@ export class UsersController {
     return await this.userService.getAllUsers();
   }
 
-  @Get(':id')
+  @Get(':userId')
   @Roles(ROLES.BASIC)
-  public async getUserById(@Param('id') id: string) {
-    return await this.userService.getUserById(id);
+  public async getUserById(@Param('userId') userId: string) {
+    return await this.userService.getUserById(userId);
   }
 
-  @Patch(':id')
+  @Patch(':userId')
   @AdminAccess()
   public async updateUser(
     @Body() body: UpdateUserDTO,
-    @Param('id') id: string,
+    @Param('userId') userId: string,
   ) {
-    return await this.userService.updateUser(body, id);
+    return await this.userService.updateUser(body, userId);
   }
 
-  @Delete(':id')
+  @Delete(':userId')
   @AdminAccess()
-  public async deleteUser(@Param('id') id: string) {
-    return await this.userService.deleteUser(id);
+  public async deleteUser(@Param('userId') userId: string) {
+    return await this.userService.deleteUser(userId);
   }
 }
