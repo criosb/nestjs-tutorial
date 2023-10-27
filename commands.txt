@@ -86,3 +86,4 @@ nest g co auth/controllers/auth --flat
 // create auth guard
 nest g gu auth/guards/auth --flat
 nest g gu auth/guards/roles --flat --no-spec
+nest g gu auth/guards/access-level --flat --no-spec
