@@ -5,13 +5,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import {
-  ACCESS_LEVEL_KEY,
-  ADMIN_KEY,
-  PUBLIC_KEY,
-  ROLES,
-  ROLES_KEY,
-} from '../../constants';
+import { ACCESS_LEVEL_KEY, PUBLIC_KEY, ROLES } from '../../constants';
 import { Request } from 'express';
 import { UsersService } from '../../users/services';
 
@@ -39,30 +33,18 @@ export class AccessLevelGuard implements CanActivate {
       return true;
     }
 
-    const roles = this.reflector.get<Array<keyof typeof ROLES>>(
-      ROLES_KEY,
-      context.getHandler(),
-    );
-    const admin = this.reflector.get<string>(ADMIN_KEY, context.getHandler());
-
-    if (!roles) {
-      if (!admin) {
-        return true;
-      } else if (admin && roleUser === admin) {
-        return true;
-      } else {
-        throw new UnauthorizedException(`Doesn't have access to this resource`);
-      }
-    }
-
     const user = await this.userService.getUserById(idUser);
+
+    console.log(user);
 
     const assignedProject = user.projects.find(
       (project) => project.project.id === req.params.projectId,
     );
 
+    console.log(assignedProject);
+
     if (!assignedProject) {
-      throw new UnauthorizedException(`Doesn't have access to this project`);
+      throw new UnauthorizedException(`Can't access to unassigned project`);
     }
 
     const accessLevel = this.reflector.get<number>(
@@ -71,7 +53,9 @@ export class AccessLevelGuard implements CanActivate {
     );
 
     if (accessLevel !== assignedProject.accessLevel) {
-      throw new UnauthorizedException(`Doesn't have access to this project`);
+      throw new UnauthorizedException(
+        `Doesn't have the right access level for this project operation`,
+      );
     }
 
     return true;

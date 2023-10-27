@@ -6,15 +6,21 @@ import {
   Param,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { ProjectsService } from '../services';
 import { ProjectDTO, UpdateProjectDTO } from '../dto';
+import { AuthGuard, RolesGuard, AccessLevelGuard } from '../../auth/guards';
+import { AccessLevel, AdminAccess } from '../../auth/decorators';
+import { ACCESS_LEVEL } from '../../constants';
 
 @Controller('projects')
+@UseGuards(AuthGuard, RolesGuard, AccessLevelGuard)
 export class ProjectsController {
   constructor(private readonly projectService: ProjectsService) {}
 
   @Post('')
+  @AdminAccess()
   public async createProject(@Body() body: ProjectDTO) {
     return await this.projectService.createProject(body);
   }
@@ -30,6 +36,7 @@ export class ProjectsController {
   }
 
   @Patch(':projectId')
+  @AccessLevel(ACCESS_LEVEL.OWNER)
   public async updateProject(
     @Body() body: UpdateProjectDTO,
     @Param('projectId') projectId: string,
@@ -38,6 +45,7 @@ export class ProjectsController {
   }
 
   @Delete(':projectId')
+  @AccessLevel(ACCESS_LEVEL.OWNER)
   public async deleteProject(@Param('projectId') projectId: string) {
     return await this.projectService.deleteProject(projectId);
   }
