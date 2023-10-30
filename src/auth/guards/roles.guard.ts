@@ -26,13 +26,13 @@ export class RolesGuard implements CanActivate {
     }
 
     const req = context.switchToHttp().getRequest<Request>();
-    const { roleUser } = req;
+    const { userRole } = req;
 
-    if (roleUser === ROLES.ADMIN) {
+    if (userRole === ROLES.ADMIN) {
       return true;
     }
 
-    const roles = this.reflector.get<Array<keyof typeof ROLES>>(
+    const roles = this.reflector.get<Array<ROLES>>(
       ROLES_KEY,
       context.getHandler(),
     );
@@ -41,14 +41,14 @@ export class RolesGuard implements CanActivate {
     if (!roles) {
       if (!admin) {
         return true;
-      } else if (admin && roleUser === admin) {
+      } else if (admin && userRole === admin) {
         return true;
       } else {
         throw new UnauthorizedException('Unauthorized');
       }
     }
 
-    const isAuth = roles.some((role) => role === roleUser);
+    const isAuth = roles.some((role) => role === userRole);
 
     if (!isAuth) {
       throw new UnauthorizedException('Unauthorized');

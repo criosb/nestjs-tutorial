@@ -27,13 +27,13 @@ export class AccessLevelGuard implements CanActivate {
     }
 
     const req = context.switchToHttp().getRequest<Request>();
-    const { idUser, roleUser } = req;
+    const { userId, userRole } = req;
 
-    if (roleUser === ROLES.ADMIN) {
+    if (userRole === ROLES.ADMIN) {
       return true;
     }
 
-    const user = await this.userService.getUserById(idUser);
+    const user = await this.userService.getUserById(userId);
 
     console.log(user);
 
